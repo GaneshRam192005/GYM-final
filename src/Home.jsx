@@ -340,7 +340,7 @@ export const Home = () => {
       
       
   
-      <button onClick={handleLogout}>Logout</button>
+      
   
     
      

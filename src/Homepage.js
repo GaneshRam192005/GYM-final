@@ -1,328 +1,139 @@
-import React, { useState ,useEffect} from "react";
-
-
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./Homepage.css";
+
 const Homepage = () => {
-  
-  const [drop, setdrop] = useState(false)
+    const [ismenuclick, setIsmenuclick] = useState(false);
+    const [drop, setdrop] = useState(false);
+    const navigate = useNavigate();
 
-  
-  const [ismenuclick, setIsmenuclick] = useState(false);
-  const [userData, setUserData] = useState(null);
-  const [userDetails, setUserDetails] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [updateFormData, setUpdateFormData] = useState({
-    username: '',
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone_number: '',
-    country: '',
-    password1: '',
-    password2: '',
-  });
-  const [adminUpdateForm, setAdminUpdateForm] = useState({
-    username: '',
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone_number: '',
-    country: '',
-    password1: '',
-    password2: '',
-    gym_name: '',
-    gym_address: '',
-    gym_phone_number: ''
-  });
-  const [adminForm, setAdminForm] = useState({
-    username: '',
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone_number: '',
-    country: '',
-    password1: '',
-    password2: '',
-    gym_name: '',
-    gym_address: '',
-    gym_phone_number: ''
-  });
- 
-  const navigate = useNavigate();
+    // Handle Logout Function for Admin
+    const handleLogout = async () => {
+        try {
+            // Retrieve user data from local storage
+            const userData = JSON.parse(localStorage.getItem('userData'));
 
-  useEffect(() => {
-    const storedUserData = localStorage.getItem('userData');
-    if (storedUserData) {
-      const parsedUserData = JSON.parse(storedUserData);
-      setUserData(parsedUserData);
-      if (parsedUserData.userType === 'user') {
-        fetchUserDetails(parsedUserData.id);
-      } else if (parsedUserData.userType === 'admin') {
-        fetchAdminDetails(parsedUserData.user_id);
-      }
-    } else {
-      navigate('/');
-    }
-  }, [navigate]);
+            if (userData && userData.user_id) {  // Fetch user_id for admin
+                // Call the logout API
+                const response = await axios.post("https://gym-management-2.onrender.com/accounts/logout/", {
+                    user_id: userData.user_id,  // Sending user_id from local storage
+                }, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "accept": "application/json"
+                    }
+                });
 
-  const fetchUserDetails = async (uid) => {
-    try {
-      const response = await fetch(`https://gym-management-2.onrender.com/accounts/user_register?id=${uid}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
+                if (response.status === 200) {
+                    console.log("Admin logged out successfully");
 
-      const data = await response.json();
-      if (response.ok) {
-        setUserDetails(data);
-        setUpdateFormData(data);
-      } else {
-        console.log('Failed to fetch user details:', data.message);
-      }
-    } catch (error) {
-      console.error('Error fetching user details:', error);
-    }
-  };
-
-  const fetchAdminDetails = async (uid) => {
-    try {
-      const response = await fetch(`https://gym-management-2.onrender.com/accounts/admin_register?id=${uid}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        setAdminUpdateForm(data);
-      } else {
-        console.log('Failed to fetch admin details:', data.message);
-      }
-    } catch (error) {
-      console.error('Error fetching admin details:', error);
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      const response = await fetch('https://gym-management-2.onrender.com/accounts/logout/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ user_id: userData.userType==='user'? userData.id:userData.user_id })
-      });
-
-      if (response.ok) {
-        localStorage.removeItem('userData');
-        navigate('/');
-      } else {
-        const data = await response.json();
-        alert(`Logout failed: ${data.message || 'Unknown error'}`);
-      }
-    } catch (error) {
-      console.error('Error during logout:', error);
-      alert('An error occurred during logout');
-    }
-  };
-
-
- 
-  
-  if (!userData) return null;
-
-  return (
-    <div>
-      <header id="top" className="fixed top-0 left-0 right-0 bg-[#018ABD]">
-        <nav className="header-content   flex items-center  justify-between  w-4/5 mx-auto space-x-7">
-          <div  className="cursor-pointer" id="logo">
-            <a href="#up">
-              <img
-                className="w-36 md:w-96 lg:w-40"
-                src="images/output-onlinepngtools (1).png"
-                alt="Logo"
-              />
-            </a>
-          </div>
-
-          <ul
-            id="nav-menu"
-            className="un-content hidden md:flex justify-between align-middle items-center space-x-7 text-black md:text-white"
-          >
-          
-            <li>
-              <a
-                className="hovering cursor-pointer sm:text-xl md:text-2xl font-semibold"
-                href="#program"
-              >
-                PROGRAMS
-              </a>
-            </li>
-            
-            <li
-              className="hovering  cursor-pointer sm:text-xl md:text-2xl font-semibold"
-              href="shop.html"
-            >
-              <Link to="/vitamins">SHOP</Link>
-            </li>
-            <li
-              className="hovering cursor-pointer sm:text-xl md:text-2xl font-semibold"
-              href="shop.html"
-            >
-              <Link to="/gym">GYM</Link>
-            </li>
-            <li>
-              <div
-                className="hovering cursor-pointer sm:text-xl md:text-2xl font-semibold"
-                href="#price"
-              >
-                PLANS
-              </div>
-            </li>
-          
-            <li
-              className="hovering cursor-pointer sm:text-xl md:text-2xl font-semibold"
-              href="testimonials.html"
-            >
-              
-              <Link to="/test">TESTIMONIALS</Link>{" "}
-            </li>
-          </ul>
-          <div className=" relative">
-            <div
-              onClick={() => {
-                setdrop(!drop);
-              }}
-              className="cursor-pointer"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                />
-              </svg>
-            </div>
-            {drop && (
-              <div className="absolute  right-[-90px] mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
-                <Link
-                  to="/adminprofile"
-                  className="block px-4 py-2 cursor-pointer text-xl font-semibold text-[#018ABD] hover:bg-gray-100"
-                >
-                  Profile
-                </Link>
-                <button
-                  onClick={() => {
+                    // Clear local storage
+                    localStorage.removeItem('userData');
                     
-                    console.log("Logout clicked");
-                  }}
-                  className="block w-full text-left px-4 py-2 text-xl font-semibold text-[#018ABD] hover:bg-gray-100"
-                >
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
+                    // Navigate to the sign-in page
+                    navigate("/sign");
+                }
+            } else {
+                console.error("Admin user data not found in local storage");
+            }
+        } catch (error) {
+            console.error("Logout failed", error);
+        }
+    };
 
-       
+    return (
+        <div>
+            <header id="top" className="fixed top-0 left-0 right-0 bg-[#018ABD]">
+                <nav className="header-content flex items-center justify-between w-4/5 mx-auto space-x-7">
+                    <div className="cursor-pointer" id="logo">
+                        <a href="#up">
+                            <img
+                                className="w-36 md:w-96 lg:w-40"
+                                src="images/output-onlinepngtools (1).png"
+                                alt="Logo"
+                            />
+                        </a>
+                    </div>
 
-          <div
-            onClick={() => {
-              setIsmenuclick(!ismenuclick);
-              console.log("clicked");
-              console.log(ismenuclick);
-            }}
-          >
-            <svg
-              id="menu-icon"
-              className="md:hidden w-8 cursor-pointer"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
-              />
-            </svg>
-          </div>
-        </nav>
+                    <ul
+                        id="nav-menu"
+                        className="un-content hidden md:flex justify-between align-middle items-center space-x-7 text-black md:text-white"
+                    >
+                        <li>
+                            <a className="hovering cursor-pointer sm:text-xl md:text-2xl font-semibold" href="#program">
+                                PROGRAMS
+                            </a>
+                        </li>
+                        <li className="hovering cursor-pointer sm:text-xl md:text-2xl font-semibold">
+                            <Link to="/vitamins">SHOP</Link>
+                        </li>
+                        <li className="hovering cursor-pointer sm:text-xl md:text-2xl font-semibold">
+                            <Link to="/admingym">GYM</Link>
+                        </li>
+                        <li>
+                            <div className="hovering cursor-pointer sm:text-xl md:text-2xl font-semibold" href="#price">
+                                PLANS
+                            </div>
+                        </li>
+                        <li className="hovering cursor-pointer sm:text-xl md:text-2xl font-semibold">
+                            <Link to="/test">TESTIMONIALS</Link>
+                        </li>
+                    </ul>
 
-        {ismenuclick ? (
-          <>
-            <div
-              id="dropdown-menu"
-              className="block flex-col bg-white font-semibold text-[#018ABD] space-y-2 text-lg px-6 py-4 absolute w-full top-16 left-0 shadow-lg md:hidden"
-            >
-              
-              <div>
-                <a
-                  className="hovering1 cursor-pointer sm:text-xl text-[#018ABD] md:text-2xl font-semibold"
-                  href="#program"
-                >
-                  PROGRAMS
-                </a>
-              </div>
-              <div
-                className="hovering1 sm:text-xl text-[#018ABD] md:text-2xl font-semibold"
-                href="shop.html"
-              >
-                <Link to="/vitamins">SHOP</Link>
-              </div>
-              <div
-                className="hovering1 sm:text-xl text-[#018ABD] md:text-2xl font-semibold"
-                href="shop.html"
-              >
-                <Link to="/gym">GYMS</Link>
-              </div>
-              
-              <div onClick={()=>{
-                setIsmenuclick(!ismenuclick)
-              }}>
-                <div
-                  className="hovering1  text-[#018ABD] sm:text-xl md:text-2xl font-semibold"
-                  href="#price"
-                >
-                  PLANS
-                </div>
-              </div>
-            
-              <div
-                className="hovering1 text-[#018ABD] sm:text-xl md:text-2xl font-semibold"
-                
-              >
-                
-                <Link to="/test">TESTIMONIALS</Link>{" "}
-              </div>
-             
-            </div>
-            
-          </>
-        ) : (
-          <></>
-        )}
-      </header>
+                    <div className="relative">
+                        <div onClick={() => setdrop(!drop)} className="cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                        </div>
+                        {drop && (
+                            <div className="absolute right-[-90px] mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                                <Link to="/adminprofile" className="block px-4 py-2 cursor-pointer text-xl font-semibold text-[#018ABD] hover:bg-gray-100">
+                                    Profile
+                                </Link>
+                                <button
+                                    onClick={handleLogout}  // Call handleLogout when clicked
+                                    className="block w-full text-left px-4 py-2 text-xl font-semibold text-[#018ABD] hover:bg-gray-100"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        )}
+                    </div>
 
+                    <div onClick={() => setIsmenuclick(!ismenuclick)} className="md:hidden w-8 cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5" />
+                        </svg>
+                    </div>
+                </nav>
 
-
-      <section id="up" className="pt-[100px] w-full  bg-[#018ABD] flex justify-around align-middle items-center pb-6 relative">
+                {ismenuclick && (
+                    <div id="dropdown-menu" className="block flex-col bg-white font-semibold text-[#018ABD] space-y-2 text-lg px-6 py-4 absolute w-full top-16 left-0 shadow-lg md:hidden">
+                        <div>
+                            <a className="hovering1 cursor-pointer sm:text-xl text-[#018ABD] md:text-2xl font-semibold" href="#program">
+                                PROGRAMS
+                            </a>
+                        </div>
+                        <div className="hovering1 sm:text-xl text-[#018ABD] md:text-2xl font-semibold">
+                            <Link to="/vitamins">SHOP</Link>
+                        </div>
+                        <div className="hovering1 sm:text-xl text-[#018ABD] md:text-2xl font-semibold">
+                            <Link to="/admingym">GYMS</Link>
+                        </div>
+                        <div onClick={() => setIsmenuclick(!ismenuclick)}>
+                            <div className="hovering1 text-[#018ABD] sm:text-xl md:text-2xl font-semibold" href="#price">
+                                PLANS
+                            </div>
+                        </div>
+                        <div className="hovering1 text-[#018ABD] sm:text-xl md:text-2xl font-semibold">
+                            <Link to="/test">TESTIMONIALS</Link>
+                        </div>
+                    </div>
+                )}
+            </header>
+            <section id="up" className="pt-[100px] w-full  bg-[#018ABD] flex justify-around align-middle items-center pb-6 relative">
         <div className="bg-[#30B0C7] absolute bottom-[-10px] left-0 right-0 text-[#30B0C7]">
           .
         </div>
@@ -863,8 +674,8 @@ const Homepage = () => {
           </div>
         </div>
       </footer>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default Homepage;

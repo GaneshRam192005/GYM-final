@@ -185,9 +185,9 @@ const Productdetails = () => {
           </div>
           <div className="p-6 md:p-8 flex flex-col justify-between">
             <h2 className="text-2xl font-bold mb-4">{product.name}</h2>
-            <p className="text-gray-700 mb-4"><strong>Description:</strong> {product.desc}</p>
-            <p className="text-gray-700 mb-4"><strong>Type:</strong> {product.type}</p>
-            <p className="text-gray-700 mb-4"><strong>Price:</strong> ${product.price}</p>
+            <p className=" mb-4"><strong>Description:</strong> {product.desc}</p>
+            <p className=" mb-4"><strong>Type:</strong> {product.type}</p>
+            <p className=" mb-4"><strong>Price:</strong> ${product.price}</p>
             <button
               onClick={handleBuyNow}
               className="w-full bg-[#1C96C3] text-white py-2 px-4 rounded-md font-semibold"

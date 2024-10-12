@@ -85,12 +85,12 @@ const Usershop = () => {
                   </div>
                   {/* Product Info */}
                   <div className="mt-4 font-semibold ">
-                    <h3 className="text-lg font-semibold text-gray-900">{product.name}</h3>
-                    <p className="text-gray-600 mt-1">Type: {product.type}</p>
-                    <p className="text-gray-600">Description: {product.desc}</p>
-                    <p className="text-gray-600">Reviews: {product.reviews}</p>
-                    <p className="text-gray-600">Stock: {product.stock}</p>
-                    <p className="text-gray-900 font-semibold">Price: ${product.price}</p>
+                    <h3 className="text-lg text-center  font-semibold text-gray-900">{product.name}</h3>
+                    <p className="text-[#018ABD] mt-1">Type: {product.type}</p>
+                    <p className="text-[#018ABD]">Description: {product.desc}</p>
+                    <p className="text-[#018ABD]">Reviews: {product.reviews}</p>
+                    <p className="text-[#018ABD]">Stock: {product.stock}</p>
+                    <p className="text-[#018ABD] font-semibold">Price: ${product.price}</p>
                     {/* <p className="text-gray-600 mt-1">Gym ID: {product.Gym}</p> */}
                   </div>
                 </div>

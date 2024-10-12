@@ -330,12 +330,12 @@ const Vitamins = () => {
             {filteredProducts.map((product) => (
               <div key={product.id} className="border p-4 rounded-md mb-4">
                 <Link to={`/product-details/${product.id}`}>
-                  <h3 className="text-xl font-semibold">{product.name}</h3>
-                  <p>Type: {product.type}</p>
-                  <p>Description: {product.desc}</p>
-                  <p>Reviews: {product.reviews}</p>
-                  <p>Stock: {product.stock}</p>
-                  <p>Price: ${product.price}</p>
+                  <h3 className="text-lg text-center font-semibold">{product.name}</h3>
+                  <p className='text-[#018ABD]'  >Type: {product.type}</p>
+                  <p className='text-[#018ABD]'>Description: {product.desc}</p>
+                  <p className='text-[#018ABD]' >Reviews: {product.reviews}</p>
+                  <p className='text-[#018ABD]'  >Stock: {product.stock}</p>
+                  <p className='text-[#018ABD]' >Price: ${product.price}</p>
                   
                 </Link>
                 <div className="flex gap-4">
