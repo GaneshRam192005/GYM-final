@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import "./ProfilePage.css";
+import { Link } from "react-router-dom";
 
 const ProfilePage = () => {
   const [userDetails, setUserDetails] = useState(null);
@@ -140,39 +141,142 @@ const Header = () => {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+  const [ismenuclick, setIsmenuclick] = useState(false);
+  
+  
 
   return (
-    <header>
-      <div className="logo">
-        {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
-        <img src="logo2.png" alt="My Image" />
+    <header id="top" className="fixed top-0 left-0 right-0 bg-[#018ABD]">
+    <nav className="header-content   flex items-center  justify-between  w-4/5 mx-auto space-x-7">
+      <div  className="cursor-pointer" id="logo">
+        <Link to="/userhome">
+          <img
+            className="w-36 md:w-96 lg:w-40"
+            src="images/output-onlinepngtools (1).png"
+            alt="Logo"
+          />
+        </Link>
       </div>
-      <nav className={menuOpen ? "nav-open" : ""}>
-        <ul className="nav-links">
-          <link to="/userhome">
-            <a href="#">Home</a>
-          </link>
-          <li>
-            <a href="#">Products</a>
-          </li>
-          <li>
-            {/* <Link to="/shop">Shop</Link> */}
-            <a href="#">Shop</a>
-          </li>
-          <li>
-            <a href="#">Plans</a>
-          </li>
-          <li>
-            <a href="#">Testimonials</a>
-          </li>
-        </ul>
-      </nav>
-      <div className="hamburger" onClick={toggleMenu}>
-        <span className="bar"></span>
-        <span className="bar"></span>
-        <span className="bar"></span>
+
+      <ul
+        id="nav-menu"
+        className="un-content hidden md:flex justify-between align-middle items-center space-x-7 text-black md:text-white"
+      >
+      
+       
+        
+        <li
+          className="hovering  cursor-pointer sm:text-xl md:text-2xl font-semibold"
+          href="shop.html"
+        >
+          <Link to="/usershop">SHOP</Link>
+        </li>
+        <li
+          className="hovering cursor-pointer sm:text-xl md:text-2xl font-semibold"
+          href="shop.html"
+        >
+          <Link to="/usergym">GYM</Link>
+        </li>
+        <li>
+          <div
+            className="hovering cursor-pointer sm:text-xl md:text-2xl font-semibold"
+            href="#price"
+          >
+            PLANS
+          </div>
+        </li>
+      
+        <li
+          className="hovering cursor-pointer sm:text-xl md:text-2xl font-semibold"
+          href="testimonials.html"
+        >
+          
+          <Link to="/test1">TESTIMONIALS</Link>{" "}
+        </li>
+      </ul>
+     
+   
+
+      <div
+        onClick={() => {
+          setIsmenuclick(!ismenuclick);
+          console.log("clicked");
+          console.log(ismenuclick);
+        }}
+      >
+        <svg
+          id="menu-icon"
+          className="md:hidden w-8 cursor-pointer"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
+          />
+        </svg>
       </div>
-    </header>
+    </nav>
+
+    {ismenuclick ? (
+      <>
+        <div
+          id="dropdown-menu"
+          className="block flex-col bg-white font-semibold text-[#018ABD] space-y-2 text-lg px-6 py-4 absolute w-full top-16 left-0 shadow-lg md:hidden"
+        >
+          
+          <div>
+            <a
+              className="hovering1 cursor-pointer sm:text-xl text-[#018ABD] md:text-2xl font-semibold"
+              href="#program"
+            >
+              PROGRAMS
+            </a>
+          </div>
+          <div
+            className="hovering1 sm:text-xl text-[#018ABD] md:text-2xl font-semibold"
+            href="shop.html"
+          >
+            <Link to="/usershop">SHOP</Link>
+          </div>
+          <div
+            className="hovering1 sm:text-xl text-[#018ABD] md:text-2xl font-semibold"
+            href="shop.html"
+          >
+            <Link to="/usergym">GYMS</Link>
+          </div>
+          
+          <div onClick={()=>{
+            setIsmenuclick(!ismenuclick)
+          }}>
+            <div
+              className="hovering1  text-[#018ABD] sm:text-xl md:text-2xl font-semibold"
+              href="#price"
+            >
+              PLANS
+            </div>
+          </div>
+        
+          <div
+            className="hovering1 text-[#018ABD] sm:text-xl md:text-2xl font-semibold"
+            
+          >
+            
+            <Link to="/test1">TESTIMONIALS</Link>{" "}
+          </div>
+         
+        </div>
+        
+      </>
+    ) : (
+      <></>
+    )}
+  </header>
+
   );
 };
 

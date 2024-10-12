@@ -92,24 +92,24 @@ const Userhome = () => {
             </div>
             {drop && (
               <div className="absolute  right-[-90px] mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
-                <Link
-                  to="/userprofile"
-                  className="block px-4 py-2 cursor-pointer text-xl font-semibold text-[#018ABD] hover:bg-gray-100"
-                >
-                  Profile
-                </Link>
-                <button
-                  onClick={() => {
-                    
-                    console.log("Logout clicked");
-                  }}
-                  className="block w-full text-left px-4 py-2 text-xl font-semibold text-[#018ABD] hover:bg-gray-100"
-                >
-                  Logout
-                </button>
-              </div>
-            )}
-          </div>
+              <Link
+                to="/user"
+                className="block px-4 py-2 cursor-pointer text-xl font-semibold text-[#018ABD] hover:bg-gray-100"
+              >
+                Profile
+              </Link>
+              <button
+                onClick={() => {
+                  
+                  console.log("Logout clicked");
+                }}
+                className="block w-full text-left px-4 py-2 text-xl font-semibold text-[#018ABD] hover:bg-gray-100"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
 
        
 
